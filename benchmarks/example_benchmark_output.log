@@ -1,0 +1,59 @@
+Beginning benchmarks (multiprocessing keygen with 64 workers)
+Benchmarking for secpar = 128.
+    Parameter generation benchmarking for secpar = 128.
+        Generating parameters.
+        Elapsed time = 0.06200189999071881.
+    Key generation benchmarking for secpar = 128 without input seeds.
+        Generating 256 keys.
+        Elapsed time = 1.2482802470040042, averaging 0.004876094714859391 per item.
+    Key generation benchmarking for secpar = 128 with these random seeds.
+        Random seed generation benchmarking for 256 new random bitstrings.
+        Elapsed time = 0.0014036709908396006, averaging 5.48308980796719e-06 per item.
+        Instantiating SecretSeed object with these seeds.
+        Elapsed time = 0.0007215859950520098, averaging 2.8186952931719134e-06 per item.
+        Making these SecretSeed objects into keys.
+        Elapsed time = 1.3220310700125992, averaging 0.005164183867236716 per item.
+        Total elapsed time = 1.3241563269984908, averaging 0.005172485652337855 per item.
+    Signature benchmarking for secpar = 128 with keys produced without random seeds.
+        Random message generation benchmarking for 256 new random bitstrings.
+        Elapsed time = 0.001248342014150694, averaging 4.8763359927761485e-06 per item.
+        Signing these messages with associated keys.
+        Elapsed time = 4.156178492004983, averaging 0.016235072234394465 per item.
+    Signature benchmarking for secpar = 128 with keys produced with random seeds.
+        Random message generation benchmarking for 256 new random bitstrings.
+        Elapsed time = 0.0011009139998350292, averaging 4.300445311855583e-06 per item.
+        Signing these messages with associated keys.
+        Elapsed time = 4.116569374018582, averaging 0.016080349117260084 per item.
+    Verification benchmarking for secpar = 128 with keys produced without random seeds.
+        Elapsed time = 17.519703139027115, averaging 0.06843634038682467 per item.
+    Verification benchmarking for secpar = 128 with keys produced with random seeds.
+        Elapsed time = 17.673974129982525, averaging 0.06903896144524424 per item.
+Benchmarking for secpar = 256.
+    Parameter generation benchmarking for secpar = 256.
+        Generating parameters.
+        Elapsed time = 0.14261272799922153.
+    Key generation benchmarking for secpar = 256 without input seeds.
+        Generating 256 keys.
+        Elapsed time = 2.775334104022477, averaging 0.0108411488438378 per item.
+    Key generation benchmarking for secpar = 256 with these random seeds.
+        Random seed generation benchmarking for 256 new random bitstrings.
+        Elapsed time = 0.0017838090134318918, averaging 6.968003958718327e-06 per item.
+        Instantiating SecretSeed object with these seeds.
+        Elapsed time = 0.0005877969961147755, averaging 2.296082016073342e-06 per item.
+        Making these SecretSeed objects into keys.
+        Elapsed time = 3.009991182014346, averaging 0.01175777805474354 per item.
+        Total elapsed time = 3.012362788023893, averaging 0.011767042140718331 per item.
+    Signature benchmarking for secpar = 256 with keys produced without random seeds.
+        Random message generation benchmarking for 256 new random bitstrings.
+        Elapsed time = 0.002373176015680656, averaging 9.270218811252562e-06 per item.
+        Signing these messages with associated keys.
+        Elapsed time = 7.145620057010092, averaging 0.02791257834769567 per item.
+    Signature benchmarking for secpar = 256 with keys produced with random seeds.
+        Random message generation benchmarking for 256 new random bitstrings.
+        Elapsed time = 0.0018541389727033675, averaging 7.242730362122529e-06 per item.
+        Signing these messages with associated keys.
+        Elapsed time = 6.895337797002867, averaging 0.02693491326954245 per item.
+    Verification benchmarking for secpar = 256 with keys produced without random seeds.
+        Elapsed time = 43.986071052000625, averaging 0.17182059004687744 per item.
+    Verification benchmarking for secpar = 256 with keys produced with random seeds.
+        Elapsed time = 44.12134382198565, averaging 0.17234899930463143 per item.

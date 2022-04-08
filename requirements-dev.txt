@@ -1,0 +1,5 @@
+pytest
+tqdm
+pytest-mock
+pytest-cov
+isthmuslib==0.0.68
