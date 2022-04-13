@@ -1,8 +1,11 @@
+from math import ceil
+
 from lattice_algebra import Polynomial, PolynomialVector, LatticeParameters, hash2polynomialvector, hash2polynomial
 from lattice_crypto.one_time_keys import SecretSeed, OneTimeSigningKey, OneTimeVerificationKey, ALLOWABLE_SECPARS, \
     SchemeParameters, UNIFORM_INFINITY_WEIGHT, bits_to_indices, bits_to_decode
 from typing import Any, Tuple, Dict, List
 from secrets import randbelow
+from multiprocessing import Pool, cpu_count
 
 # Typing
 SecurityParameter = int
@@ -94,7 +97,34 @@ def make_one_key(pp: PublicParameters, seed: SecretSeed = None) -> OneTimeKeyTup
     return x, otsk, otvk
 
 
-def keygen(pp: PublicParameters, num_keys_to_gen: int = 1, seeds: List[SecretSeed] = None) -> List[OneTimeKeyTuple]:
+def keygen(pp: PublicParameters, num_keys_to_gen: int = 1, seeds: List[SecretSeed] = None,
+           multiprocessing: bool = None) -> List[OneTimeKeyTuple]:
+    """ Wraps keygen_core to handle workload distribution for batch generation """
+
+    # Only default to parallelization if more than a few keys are needed (to avoid unnecessary overhead)
+    if multiprocessing is None:
+        multiprocessing: bool = num_keys_to_gen >= 16
+    num_workers: int = cpu_count()
+
+    # Pass straight through to keygen_core() if there is no reason or desire to parallelize (to avoid extra overhead)
+    if (not multiprocessing) or (num_keys_to_gen == 1) or (num_workers == 1):
+        return keygen_core(pp=pp, num_keys_to_gen=num_keys_to_gen, seeds=seeds)
+
+    # Prepare inputs for the pool
+    if not seeds:
+        iterable: List[Tuple[Dict[str, Any], int]] = [(pp, ceil(num_keys_to_gen / num_workers))] * num_workers
+    else:
+        seed_batches: List[List[Any]] = distribute_tasks(tasks=seeds)
+        iterable: List[tuple] = list(zip([pp] * len(seed_batches), [len(x) for x in seed_batches], seed_batches))
+
+    # Generate the keys and return the flattened results
+    with Pool(num_workers) as pool:
+        nested_keys: List[List[OneTimeKeyTuple]] = pool.starmap(func=keygen, iterable=iterable)
+    return [item for sublist in nested_keys for item in sublist][:num_keys_to_gen]
+
+
+def keygen_core(pp: PublicParameters, num_keys_to_gen: int = 1,
+                seeds: List[SecretSeed] = None) -> List[OneTimeKeyTuple]:
     if num_keys_to_gen < 1:
         raise ValueError('Can only generate a natural number worth of keys.')
     elif seeds is not None and len(seeds) != num_keys_to_gen:
@@ -159,3 +189,27 @@ def verify(pp: PublicParameters, otvk: OneTimeVerificationKey, msg: Message, sig
     rhs = otvk[0] * c + otvk[1]
 
     return lhs == rhs
+
+
+def distribute_tasks(tasks: List[Any], num_workers: int = None) -> List[List[Any]]:
+    """
+    Helper function that distributes a list of arbitrary tasks among a specific number of workers
+
+    :param tasks: iterable containing list of tasks to carry out
+    :param num_workers: number of workers available in the pool (usually = number of CPU cores)
+    :return: task list broken up into num_workers segments
+    """
+    if not num_workers:
+        num_workers = cpu_count()
+
+    # Determine how the jobs should be split up per core
+    r: int = len(tasks) % num_workers  # number of leftover jobs once all complete batches are processed
+    job_counts: List[int] = r * [1 + (len(tasks) // num_workers)] + (num_workers - r) * [len(tasks) // num_workers]
+
+    # Distribute the tasks accordingly
+    i: int = 0
+    task_list_all: List[List[Any]] = []
+    for load_amount in job_counts:
+        task_list_all.append(tasks[i:i + load_amount])
+        i += load_amount
+    return task_list_all

@@ -5,7 +5,6 @@ from timeit import default_timer as timer
 from lattice_crypto.lm_one_time_sigs import *
 from multiprocessing import Pool, cpu_count
 from math import ceil
-from isthmuslib import divvy_workload
 
 # Benchmarking params
 SAMPLE_SIZE: int = 2 ** 8
@@ -41,13 +40,7 @@ for secpar in allowable_secpars:
     print(f"\tKey generation benchmarking for secpar = {secpar} without input seeds.")
     print(f"\t\tGenerating {SAMPLE_SIZE} keys.  ")
     start = timer()
-    if multiprocessing and num_cores > 1:
-        input_bundles: List[Tuple[Dict[str, Any], int]] = [(pp, sample_size_per_core)] * num_workers
-        with Pool(num_workers) as pool:
-            nested_keys = pool.starmap(func=keygen, iterable=input_bundles)
-        some_keys_without_seeds = flatten(nested_keys)
-    else:
-        some_keys_without_seeds = keygen(pp=pp, num_keys_to_gen=SAMPLE_SIZE)
+    some_keys_without_seeds = keygen(pp=pp, num_keys_to_gen=SAMPLE_SIZE, multiprocessing=multiprocessing)
     end = timer()
     print(f"\t\tElapsed time = {end - start}, averaging {(end - start) / SAMPLE_SIZE} per item.")
 
@@ -68,18 +61,9 @@ for secpar in allowable_secpars:
     time_with_seeds += end - start
     print(f"\t\tElapsed time = {end - start}, averaging {(end - start) / SAMPLE_SIZE} per item.")
 
-    print(f"\t\tMaking these SecretSeed objects into keys.  ")
+    print(f"\t\tGenerating keys from these SecretSeed objects.")
     start = timer()
-    if multiprocessing and num_cores > 1:
-        batched_seeds: List[List[Any]] = divvy_workload(num_workers=num_workers, tasks=some_seeds)
-        sample_sizes: List[int] = [len(x) for x in batched_seeds]
-        input_bundles: List[Tuple[Dict[str, Any], int, List[Any]]] = [(pp, x[0], x[1]) for x in
-                                                                      zip(sample_sizes, batched_seeds)]
-        with Pool(num_workers) as pool:
-            nested_keys = pool.starmap(func=keygen, iterable=input_bundles)
-        some_keys_with_seeds = flatten(nested_keys)
-    else:
-        some_keys_with_seeds = keygen(pp=pp, num_keys_to_gen=SAMPLE_SIZE, seeds=some_seeds)
+    some_keys_with_seeds = keygen(pp=pp, num_keys_to_gen=SAMPLE_SIZE, seeds=some_seeds, multiprocessing=multiprocessing)
     end = timer()
     time_with_seeds += end - start
     print(f"\t\tElapsed time = {end - start}, averaging {(end - start) / SAMPLE_SIZE} per item.")
