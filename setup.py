@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""lattice-algebra distutils configuration."""
+"""lattice-cryptography distutils configuration."""
 import os
 import codecs
 
@@ -30,7 +30,7 @@ setup(
     name="lattice_cryptography",
     version=get_version(os.path.join("lattice_cryptography", "__init__.py")),
     description=(
-        "Implementation of lattice algebra primitives"
+        "Implementation of lattice cryptography primitives"
     ),
     long_description=readme,
     long_description_content_type="text/markdown",
@@ -47,8 +47,10 @@ setup(
         "Development Status :: 5 - Production/Stable",
         "Environment :: Console",
         "Intended Audience :: Developers",
+        "Intended Audience :: Science/Research",
+        "Intended Audience :: Financial and Insurance Industry",
         "Natural Language :: English",
-        "License :: OSI Approved :: BSD License",
+        "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3 :: Only",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
@@ -60,10 +62,14 @@ setup(
         "Programming Language :: Python :: Implementation :: PyPy",
         "Programming Language :: Python",
         "Topic :: Software Development",
+        "Topic :: Scientific/Engineering :: Mathematics",
+        "Topic :: Security :: Cryptography",
+        "Typing :: Typed",
     ],
     keywords=[
         "lattice",
         "cryptography",
         "crypto",
+        "signatures"
     ],
 )
