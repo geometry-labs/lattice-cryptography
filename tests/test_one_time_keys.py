@@ -3,7 +3,7 @@ We test the lattice-crypto.keys.one_time_keys module.
 """
 import pytest
 from lattice_algebra import is_ntt_friendly_prime
-from lattice_crypto.one_time_keys import *
+from lattice_cryptography.one_time_keys import *
 from secrets import randbits
 from typing import List
 
@@ -231,7 +231,7 @@ SCHEME_PARAMETERS_CASES = [
 
 @pytest.mark.parametrize("secpar,lp,seed,secret_seed,wit_bd,wit_wt,wit,key_ch,stat,sk_bd,sk_wt,left_sk,right_sk,sk,left_vk,right_vk,vk,distn", SCHEME_PARAMETERS_CASES)
 def test_schemeparameters_init(mocker, secpar, lp, seed, secret_seed, wit_bd, wit_wt, wit, key_ch, stat, sk_bd, sk_wt, left_sk, right_sk, sk, left_vk, right_vk, vk, distn):
-    mocker.patch('lattice_crypto.one_time_keys.random_polynomialvector', return_value=key_ch)
+    mocker.patch('lattice_cryptography.one_time_keys.random_polynomialvector', return_value=key_ch)
     sp = SchemeParameters(secpar=secpar, lp=lp, distribution=distn, key_ch=None)
     assert sp.secpar == secpar
     assert sp.lp == lp

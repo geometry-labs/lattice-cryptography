@@ -2,7 +2,7 @@
 We benchmark the lattice-crypto.lm_one_time_sigs.lm_one_time_sigs module.
 """
 from timeit import default_timer as timer
-from lattice_crypto.lm_one_time_sigs import *
+from lattice_cryptography.lm_one_time_sigs import *
 from multiprocessing import Pool, cpu_count
 from math import ceil
 

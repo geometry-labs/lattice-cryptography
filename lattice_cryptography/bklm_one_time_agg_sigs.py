@@ -1,8 +1,8 @@
 from lattice_algebra import Polynomial, is_bitstring
 from typing import Dict, List, Tuple
-from lattice_crypto.lm_one_time_sigs import SecurityParameter, PublicParameters, Message, Signature, \
+from lattice_cryptography.lm_one_time_sigs import SecurityParameter, PublicParameters, Message, Signature, \
     make_setup_parameters as setup_pars, make_signature_challenge, BDs, WTs, SALTs, hash2polynomial
-from lattice_crypto.one_time_keys import ALLOWABLE_SECPARS, OneTimeVerificationKey, bits_to_decode, bits_to_indices
+from lattice_cryptography.one_time_keys import ALLOWABLE_SECPARS, OneTimeVerificationKey, bits_to_decode, bits_to_indices
 
 
 

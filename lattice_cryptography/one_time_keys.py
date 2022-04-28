@@ -1,5 +1,5 @@
 """
-The lattice_crypto.keys module handles keys and their generation.
+The lattice_cryptography.keys module handles keys and their generation.
 """
 from lattice_algebra import Polynomial, PolynomialVector, LatticeParameters, random_polynomialvector, \
     is_bitstring, UNIFORM_INFINITY_WEIGHT

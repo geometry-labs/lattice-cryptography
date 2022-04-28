@@ -1,7 +1,7 @@
 from math import ceil
 
 from lattice_algebra import Polynomial, PolynomialVector, LatticeParameters, hash2polynomialvector, hash2polynomial
-from lattice_crypto.one_time_keys import SecretSeed, OneTimeSigningKey, OneTimeVerificationKey, ALLOWABLE_SECPARS, \
+from lattice_cryptography.one_time_keys import SecretSeed, OneTimeSigningKey, OneTimeVerificationKey, ALLOWABLE_SECPARS, \
     SchemeParameters, UNIFORM_INFINITY_WEIGHT, bits_to_indices, bits_to_decode
 from typing import Any, Tuple, Dict, List
 from secrets import randbelow

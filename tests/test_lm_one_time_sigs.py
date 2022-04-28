@@ -3,8 +3,8 @@ We test the lattice-crypto.lm_one_time_sigs module.
 """
 import pytest
 from lattice_algebra import random_polynomialvector, random_polynomial
-from lattice_crypto.one_time_keys import ALLOWABLE_SECPARS, SecretSeed, OneTimeSigningKey, OneTimeVerificationKey, SchemeParameters, bits_to_decode, bits_to_indices
-from lattice_crypto.lm_one_time_sigs import PublicParameters, Message, Challenge, Signature, OneTimeKeyTuple, make_setup_parameters, make_one_key, keygen, make_signature_challenge, sign, verify, LPs, SALTs, BDs, WTs, DISTRIBUTION, make_random_seed
+from lattice_cryptography.one_time_keys import ALLOWABLE_SECPARS, SecretSeed, OneTimeSigningKey, OneTimeVerificationKey, SchemeParameters, bits_to_decode, bits_to_indices
+from lattice_cryptography.lm_one_time_sigs import PublicParameters, Message, Challenge, Signature, OneTimeKeyTuple, make_setup_parameters, make_one_key, keygen, make_signature_challenge, sign, verify, LPs, SALTs, BDs, WTs, DISTRIBUTION, make_random_seed
 from secrets import randbits
 from typing import Any, Dict, List
 
@@ -57,7 +57,7 @@ MAKE_SETUP_PARAMETERS_CASES = [
 
 @pytest.mark.parametrize("secpar,sp,expected_pp", MAKE_SETUP_PARAMETERS_CASES)
 def test_make_setup_parameters(mocker, secpar, sp, expected_pp):
-    mocker.patch('lattice_crypto.one_time_keys.random_polynomialvector', return_value=sp.key_ch)
+    mocker.patch('lattice_cryptography.one_time_keys.random_polynomialvector', return_value=sp.key_ch)
     assert expected_pp == make_setup_parameters(secpar)
 
 MAKE_RANDOM_SEED_CASES = [
@@ -70,7 +70,7 @@ MAKE_RANDOM_SEED_CASES = [
 
 @pytest.mark.parametrize("secpar,sp,pp,expected_int,expected_str,expected_seed", MAKE_RANDOM_SEED_CASES)
 def test_make_random_seed(mocker, secpar, sp, pp, expected_int, expected_str, expected_seed):
-    mocker.patch('lattice_crypto.lm_one_time_sigs.randbelow', return_value=expected_int)
+    mocker.patch('lattice_cryptography.lm_one_time_sigs.randbelow', return_value=expected_int)
     observed_seed = make_random_seed(secpar=secpar, pp=pp)
     assert observed_seed == expected_seed
     assert observed_seed.seed == expected_str
@@ -152,8 +152,8 @@ for i in MAKE_ONE_KEY_CASES:
 
 @pytest.mark.parametrize("secpar,sp,pp,j,seed,secret_seed,sk_bd,sk_wt,left_sk,right_sk,sk,left_vk,right_vk,vk", MAKE_ONE_KEY_CASES)
 def test_make_one_key(mocker, secpar, sp, pp: Dict[str, Any], j, seed, secret_seed, sk_bd, sk_wt, left_sk, right_sk, sk, left_vk, right_vk, vk):
-    mocker.patch('lattice_crypto.lm_one_time_sigs.make_random_seed', return_value=secret_seed)
-    mocker.patch('lattice_crypto.lm_one_time_sigs.hash2polynomialvector', side_effect=[left_sk, right_sk])
+    mocker.patch('lattice_cryptography.lm_one_time_sigs.make_random_seed', return_value=secret_seed)
+    mocker.patch('lattice_cryptography.lm_one_time_sigs.hash2polynomialvector', side_effect=[left_sk, right_sk])
 
     observed_key_tuple = make_one_key(pp=pp)
     observed_seed, observed_sk, observed_vk = observed_key_tuple
@@ -178,7 +178,7 @@ def test_make_one_key(mocker, secpar, sp, pp: Dict[str, Any], j, seed, secret_se
 
 @pytest.mark.parametrize("secpar,sp,pp,j,seed,secret_seed,sk_bd,sk_wt,left_sk,right_sk,sk,left_vk,right_vk,vk", MAKE_ONE_KEY_CASES)
 def test_keygen(mocker, secpar, sp, pp: Dict[str, Any], j, seed, secret_seed, sk_bd, sk_wt, left_sk, right_sk, sk, left_vk, right_vk, vk):
-    mocker.patch('lattice_crypto.lm_one_time_sigs.make_one_key', return_value=(secret_seed, sk, vk))
+    mocker.patch('lattice_cryptography.lm_one_time_sigs.make_one_key', return_value=(secret_seed, sk, vk))
     key_tuples = keygen(pp=pp, num_keys_to_gen=1, seeds=[secret_seed])
     assert isinstance(key_tuples, list)
     assert len(key_tuples) == 1
@@ -237,7 +237,7 @@ for i in MAKE_SIGNATURE_CHALLENGE_CASES:
 
 @pytest.mark.parametrize("secpar,sp,pp,j,seed,secret_seed,sk_bd,sk_wt,left_sk,right_sk,sk,left_vk,right_vk,vk,ch_bd,ch_wt,msg,sig_ch", MAKE_SIGNATURE_CHALLENGE_CASES)
 def test_make_signature_challenge(mocker, secpar, sp, pp, j, seed, secret_seed, sk_bd, sk_wt, left_sk, right_sk, sk, left_vk, right_vk, vk, ch_bd, ch_wt, msg, sig_ch):
-    mocker.patch('lattice_crypto.lm_one_time_sigs.hash2polynomial', return_value=sig_ch)
+    mocker.patch('lattice_cryptography.lm_one_time_sigs.hash2polynomial', return_value=sig_ch)
     assert make_signature_challenge(pp=pp, otvk=vk, msg=msg) == sig_ch
 
 
@@ -275,7 +275,7 @@ MAKE_SIGN_CASES = [
 # i = 21: expected vf bit
 @pytest.mark.parametrize("secpar,sp,pp,j,seed,secret_seed,sk_bd,sk_wt,left_sk,right_sk,sk,left_vk,right_vk,vk,ch_bd,ch_wt,msg,sig_ch,expected_sig_a,expected_valid_a,expected_sig_b,expected_valid_b", MAKE_SIGN_CASES)
 def test_sign(mocker, secpar, sp, pp, j, seed, secret_seed, sk_bd, sk_wt, left_sk, right_sk, sk, left_vk, right_vk, vk, ch_bd, ch_wt, msg, sig_ch, expected_sig_a, expected_valid_a, expected_sig_b, expected_valid_b):
-    mocker.patch('lattice_crypto.lm_one_time_sigs.make_signature_challenge', return_value=sig_ch)
+    mocker.patch('lattice_cryptography.lm_one_time_sigs.make_signature_challenge', return_value=sig_ch)
     sig_ch.const_time_flag = False
     sk[0].const_time_flag = False
     sk[1].const_time_flag = False
@@ -294,7 +294,7 @@ def test_sign(mocker, secpar, sp, pp, j, seed, secret_seed, sk_bd, sk_wt, left_s
 
 @pytest.mark.parametrize("secpar,sp,pp,j,seed,secret_seed,sk_bd,sk_wt,left_sk,right_sk,sk,left_vk,right_vk,vk,ch_bd,ch_wt,msg,sig_ch,sig_a,valid_a,sig_b,valid_b", MAKE_SIGN_CASES)
 def test_vf(mocker, secpar, sp, pp, j, seed, secret_seed, sk_bd, sk_wt, left_sk, right_sk, sk, left_vk, right_vk, vk, ch_bd, ch_wt, msg, sig_ch, sig_a, valid_a, sig_b, valid_b):
-    mocker.patch('lattice_crypto.lm_one_time_sigs.make_signature_challenge', return_value=sig_ch)
+    mocker.patch('lattice_cryptography.lm_one_time_sigs.make_signature_challenge', return_value=sig_ch)
     assert sig_a == sig_b
     assert sk[0] ** sig_ch + sk[1] == sig_a
     assert sp.key_ch == pp['scheme_parameters'].key_ch
