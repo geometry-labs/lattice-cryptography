@@ -40,6 +40,7 @@ setup(
     packages=find_packages(exclude=["tests*", "docs*", ".github*"]),
     package_dir={"lattice_cryptography": "lattice_cryptography"},
     include_package_data=True,
+    install_requires=['lattice_algebra==0.1.1'],
     python_requires=">=3.6",
     license="MIT",
     zip_safe=False,
