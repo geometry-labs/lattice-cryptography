@@ -1,13 +1,22 @@
 ## Introduction
 
-This repository contains an implementation of a lattice-based one-time signature scheme (similar to the one published by [Lyubashevsky and Micciancio](https://eprint.iacr.org/2013/746.pdf)), and an extension to [Boneh and Kim](https://github.com/geometry-labs/rsis/blob/dev-end-of-january/lmsigs/agg_ots/agg_ots.py) style signature aggregation. An upcoming release will include prototypes of our novel one-time adaptor signature scheme.
+This repository contains an implementation of a lattice-based one-time signature scheme (similar to the one published
+by [Lyubashevsky and Micciancio](https://eprint.iacr.org/2013/746.pdf)), and an extension
+to [Boneh and Kim](https://github.com/geometry-labs/rsis/blob/dev-end-of-january/lmsigs/agg_ots/agg_ots.py) style
+signature aggregation. The `lattice_cryptography` folder also includes a prototype of our novel one-time adaptor
+signature scheme.
 
 ## Explanatory resources
-The "Techniques for efficient post-quantum finance" finance series contains several articles that go into detail about how these schemes work.
 
-+ For more information about the one-time signature scheme (`lm_one_times_sigs`) see this writeup: [https://www.theqrl.org/blog/techniques-for-efficient-post-quantum-finance-part-1-digital-signatures/](https://www.theqrl.org/blog/techniques-for-efficient-post-quantum-finance-part-1-digital-signatures/)
-+ For more information about signature aggregation (`bklm_one_time_agg_sigs.py`) see this writeup: [https://www.theqrl.org/blog/techniques-for-efficient-post-quantum-finance-part-2-signature-aggregation/](https://www.theqrl.org/blog/techniques-for-efficient-post-quantum-finance-part-2-signature-aggregation/)
-+ For more information about the `lattice-algebra` library underlying the code in this repositor, see our introduction here: https://www.theqrl.org/blog/lattice-algebra-library/
+The "Techniques for efficient post-quantum finance" finance series contains several articles that go into detail about
+how these schemes work.
+
++ For more information about the one-time signature scheme (`lm_one_times_sigs`) see this
+  writeup: [https://www.theqrl.org/blog/techniques-for-efficient-post-quantum-finance-part-1-digital-signatures/](https://www.theqrl.org/blog/techniques-for-efficient-post-quantum-finance-part-1-digital-signatures/)
++ For more information about signature aggregation (`bklm_one_time_agg_sigs.py`) see this
+  writeup: [https://www.theqrl.org/blog/techniques-for-efficient-post-quantum-finance-part-2-signature-aggregation/](https://www.theqrl.org/blog/techniques-for-efficient-post-quantum-finance-part-2-signature-aggregation/)
++ For more information about the `lattice-algebra` library underlying the code in this repositor, see our introduction
+  here: https://www.theqrl.org/blog/lattice-algebra-library/
 
 ## Contributors
 
