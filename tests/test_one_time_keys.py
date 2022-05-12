@@ -66,8 +66,8 @@ ONE_TIME_SECRET_WITNESS_CASES = [
                 distribution=DISTRIBUTION,
                 dist_pars={'bd': bd, 'wt': wt},
                 num_coefs=wt,
-                bti=bits_to_indices(secpar=i[0], degree=i[1].degree, wt=wt),
-                btd=bits_to_decode(secpar=i[0], bd=bd),
+                bti=bits_per_index_set(secpar=i[0], degree=i[1].degree, wt=wt),
+                btd=bits_per_coefficient(secpar=i[0], bd=bd),
                 const_time_flag=False,
             ))
     ]) for i in SECRET_SEED_INIT_CASES for bd in SOME_BDS for wt in SOME_WTS
@@ -100,11 +100,11 @@ KEY_CHALLENGES = [
             distribution=DISTRIBUTION,
             dist_pars={'bd': i[1].modulus//2, 'wt': i[1].degree},
             num_coefs=i[1].degree,
-            bti=bits_to_indices(
+            bti=bits_per_index_set(
                 secpar=i[0],
                 degree=i[1].degree,
                 wt=i[1].degree),
-            btd=bits_to_decode(
+            btd=bits_per_coefficient(
                 secpar=i[0],
                 bd=i[1].modulus//2),
             const_time_flag=False)
@@ -135,11 +135,11 @@ ONE_TIME_SIGNING_KEY_CASES = [i + tuple([
         distribution=DISTRIBUTION,
         dist_pars={'bd': i[1].modulus//2, 'wt': i[1].degree},
         num_coefs=i[1].degree,
-        bti=bits_to_indices(
+        bti=bits_per_index_set(
             secpar=i[0],
             degree=i[1].degree,
             wt=i[1].degree),
-        btd=bits_to_decode(
+        btd=bits_per_coefficient(
             secpar=i[0],
             bd=i[1].modulus//2),
         const_time_flag=False),
@@ -149,11 +149,11 @@ ONE_TIME_SIGNING_KEY_CASES = [i + tuple([
         distribution=DISTRIBUTION,
         dist_pars={'bd': i[1].modulus // 2, 'wt': i[1].degree},
         num_coefs=i[1].degree,
-        bti=bits_to_indices(
+        bti=bits_per_index_set(
             secpar=i[0],
             degree=i[1].degree,
             wt=i[1].degree),
-        btd=bits_to_decode(
+        btd=bits_per_coefficient(
             secpar=i[0],
             bd=i[1].modulus // 2),
         const_time_flag=False),
