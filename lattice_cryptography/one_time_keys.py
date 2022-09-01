@@ -240,11 +240,19 @@ class OneTimeVerificationKey(object):
 ALLOWABLE_DISTRIBUTIONS = [UNIFORM_INFINITY_WEIGHT]
 
 
-def bits_to_indices(secpar: int, degree: int, wt: int) -> int:
+def bits_per_index_set(secpar: int, degree: int, wt: int) -> int:
+    """Return number of bits required to sample wt indices uniformly without replacement from [0, 1, ..., degree - 1]
+    for a power-of-two degree, with a bias that is O(2**-secpar).
+    """
     return ceil(log2(degree)) + (wt - 1) * (ceil(log2(degree)) + secpar)
 
 
-def bits_to_decode(secpar: int, bd: int) -> int:
+def bits_per_coefficient(secpar: int, bd: int) -> int:
+    """Return number of bits required to sample a coefficient uniformly from [-bd, -bd + 1, ..., bd - 1, bd] with a
+    bias that is O(2**-secpar).
+    """
+    if bd <= 0:
+        raise ValueError('Cannot compute bits per coefficient for a non-positive bound bd.')
     return ceil(log2(bd)) + 1 + secpar
 
 
@@ -276,8 +284,8 @@ class SchemeParameters(object):
         elif distribution == UNIFORM_INFINITY_WEIGHT:
             self.key_ch = random_polynomialvector(
                 secpar=secpar, lp=lp, distribution=distribution, dist_pars={'bd': lp.modulus//2, 'wt': lp.degree},
-                bti=bits_to_indices(secpar=secpar, degree=lp.degree, wt=lp.degree),
-                btd=bits_to_decode(secpar=secpar, bd=lp.modulus//2),
+                bti=bits_per_index_set(secpar=secpar, degree=lp.degree, wt=lp.degree),
+                btd=bits_per_coefficient(secpar=secpar, bd=lp.modulus // 2),
                 const_time_flag=True, num_coefs=lp.degree
             )
         else:
